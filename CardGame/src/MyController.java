@@ -26,6 +26,9 @@ public class MyController {
 	int cardNum2 = 0;
 	int cardNum3 = 0;
 	int cardNum4 = 0;
+	long start = 0;
+	long end = 0;
+	boolean pressed = false;
 	
 	
 	
@@ -71,10 +74,29 @@ public class MyController {
     	
     }
 
+    public MyController() {
+    	//refreshCards(new ActionEvent());
+    }
 
     @FXML
     void refreshCards(ActionEvent event) {
+    	// start of function 
+    	if (!pressed) {
+    		start = System.currentTimeMillis(); 
+            pressed = true;
+    	}
+    	else {
+    		end = System.currentTimeMillis(); 
+            System.out.println("Time elapsed: " + 
+                                       ( (end - start)/1000) + "s"); 
+            start = System.currentTimeMillis(); 
+            
+    	}
     	
+        
+     
+        
+    	tfExpression.clear();
     	butRefresh.setText("Refresh");
     	
     	//card1
@@ -111,6 +133,10 @@ public class MyController {
 		//card4
 		Image img4 = new Image(card4.getPic());
 		imageView4.setImage(img4);
+		
+		
+		//end time
+		
 
     }
     
@@ -157,8 +183,9 @@ public class MyController {
     		 String foo = tfExpression.getText();
     		 String result = (engine.eval(foo)).toString();
     		 tfExpression.clear();
-     	 
-    		 if(result == "24") {
+    		 tfExpression.setText(result);
+    		 
+    		 if(Integer.parseInt(result) == 24) {
     			 tfExpression.setText("24!");
 
     		 }
