@@ -1,6 +1,6 @@
 # GRP1UPJ345
 
-GAME 24
+PLAYING 24
 
 
 Game24 is arithmetic numbers game where the user’s main objective is to get to 24 using 4 numbers that are picked at random. 
