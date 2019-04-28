@@ -8,6 +8,8 @@ public class Driver extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		
 		Parent p = FXMLLoader.load(getClass().getResource("Playing24.fxml"));
 		Scene scene = new Scene(p);
 		primaryStage.setScene(scene);
