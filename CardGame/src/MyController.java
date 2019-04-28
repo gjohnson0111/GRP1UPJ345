@@ -82,8 +82,9 @@ public class MyController {
 
     @FXML
     void refreshCards(ActionEvent event) {
-    	// start of function 
-    	
+    	// start of function
+    	// Call to record time
+    	recordTime();
         
     	tfSolution.clear();
         
@@ -318,7 +319,24 @@ public class MyController {
     		imageView4.setImage(img4);	
     	
     }
-    
+// record time function 
+    public void recordTime() {
+        if(!pressed) { //if refresh button was pressed, start record time
+            start = System.currentTimeMillis(); //get current time from system
+            pressed = true; //set flag to true
+            
+        }
+        else {
+            end = System.currentTimeMillis(); //get current end time from system
+            long millis = (end - start); //get difference from start and end time, for duration
+            long minutes = (millis/1000)/60; //get minutes
+            int seconds = (int)((millis/1000)%60); //get seconds from remainder
+            System.out.println("Time elapsed: " + minutes + "m " + seconds + "s " );
+            start = System.currentTimeMillis(); //restart time record
+            
+        }
+    }
+
 }
 
 
