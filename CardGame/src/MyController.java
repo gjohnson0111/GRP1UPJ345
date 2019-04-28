@@ -77,25 +77,30 @@ public class MyController {
     public MyController() {
     	//refreshCards(new ActionEvent());
     }
+    // Record time needed to solve the problem.
+    public void recordTime() {
+        if(!pressed) {
+            start = System.currentTimeMillis();
+            pressed = true;
+            
+        }
+        else {
+            end = System.currentTimeMillis();
+            long millis = (end - start);
+            long minutes = (millis/1000)/60;
+            int seconds = (int)((millis/1000)%60);
+            System.out.println("Time elapsed: " + minutes + "m " + seconds + "s " );
+            start = System.currentTimeMillis();
+            
+        }
+    }
+
 
     @FXML
     void refreshCards(ActionEvent event) {
     	// start of function 
-    	if (!pressed) {
-    		start = System.currentTimeMillis(); 
-            pressed = true;
-    	}
-    	else {
-    		end = System.currentTimeMillis(); 
-            System.out.println("Time elapsed: " + 
-                                       ( (end - start)/1000) + "s"); 
-            start = System.currentTimeMillis(); 
-            
-    	}
     	
-        
-     
-        
+    	recordTime();      	
     	tfExpression.clear();
     	butRefresh.setText("Refresh");
     	
