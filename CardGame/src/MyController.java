@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Random;
 
 import javax.script.ScriptEngine;
@@ -29,10 +31,7 @@ public class MyController {
 	long start = 0;
 	long end = 0;
 	boolean pressed = false;
-	
-	
-	
-	
+
 	
 
     @FXML
@@ -64,37 +63,29 @@ public class MyController {
 
     @FXML
     private TextField tfSolution;
+    
 
     @FXML
     private TextField tfExpression;
+   
 
     @FXML
     void findSolution(ActionEvent event) {
     	
     	
+    	    	
     }
 
-    public MyController() {
+    public MyController() { //entered by professor?
     	//refreshCards(new ActionEvent());
     }
 
     @FXML
     void refreshCards(ActionEvent event) {
     	// start of function 
-    	if (!pressed) {
-    		start = System.currentTimeMillis(); 
-            pressed = true;
-    	}
-    	else {
-    		end = System.currentTimeMillis(); 
-            System.out.println("Time elapsed: " + 
-                                       ( (end - start)/1000) + "s"); 
-            start = System.currentTimeMillis(); 
-            
-    	}
     	
         
-     
+    	tfSolution.clear();
         
     	tfExpression.clear();
     	butRefresh.setText("Refresh");
@@ -146,25 +137,30 @@ public class MyController {
     @FXML
     void verifyCards(ActionEvent event) throws ScriptException {
     	
-    	boolean same = true;
+    	boolean same = true; //create flag to check arrays
     	
-    	String exp = tfExpression.getText();
     	
-    	 String [] expNumbers = exp.split("\\+|-|/|\\*");
+    	String exp = tfExpression.getText(); //retrieve text from text field
+    	
+    	 String [] expNumbers = exp.split("\\+|-|/|\\*"); //split expression and store digits
     	 
-    	 
+    	 //parse string numbers to integers and store in an integer array
     	 int entered1 = Integer.parseInt(expNumbers[0]);
     	 int entered2 = Integer.parseInt(expNumbers[1]);
     	 int entered3 = Integer.parseInt(expNumbers[2]);
     	 int entered4 = Integer.parseInt(expNumbers[3]);
     	 
-    	 int [] entered = {entered1, entered2, entered3, entered4};
-    	 Arrays.sort(entered);
-    	 int [] hand = {card1.getCardNum(), card2.getCardNum(), card3.getCardNum(), card4.getCardNum()};
-    	 Arrays.sort(hand);
     	 
+    	 int [] entered = {entered1, entered2, entered3, entered4};
+    	 Arrays.sort(entered); //sort array
+    	 
+    	 //store card numbers in an array called hand to compare with the numbers taken in from expression
+    	 int [] hand = {card1.getCardNum(), card2.getCardNum(), card3.getCardNum(), card4.getCardNum()};
+    	 Arrays.sort(hand); //sort array
+    	 
+    	 //check every index to see if they hold the same value (sorted), if not set flag to false
     	 for(int i = 0; i < 4; i++) {
-    		 
+    		
     		 if(entered[i] != hand[i]) {
     			 same = false;
     			 break;
@@ -172,12 +168,15 @@ public class MyController {
     		
     	 }
     	 
-    	 System.out.println(same);
+    	// System.out.println(same);
     	 
+    	 //if flag is false and the arrays are not the same tell user that they must use the numbers shown
     	 if(same == false) {
     		 tfExpression.setText("Numbers must match cards!");
     	 }
     	 else {
+    		 
+    		 //create and instantiate script engine object to evaluate text field expression
     		 ScriptEngineManager mgr = new ScriptEngineManager();
     		 ScriptEngine engine = mgr.getEngineByName("JavaScript");
     		 String foo = tfExpression.getText();
@@ -185,18 +184,30 @@ public class MyController {
     		 tfExpression.clear();
     		 tfExpression.setText(result);
     		 
+    		 //if expression equals 24 end the record time and tell user they won
     		 if(Integer.parseInt(result) == 24) {
-    			 tfExpression.setText("24!");
+    			 end = System.currentTimeMillis();
+    			 long millis = (end - start);
+    			 long minutes = (millis/1000) / 60;
+    			 int seconds = (int)((millis/1000) % 60);
+    			 System.out.println("Time elapsed: " + minutes + "m " + seconds + "s " );
+    			 pressed = false;
+    			 
+    			 tfExpression.setText("24! WINNER!");
 
     		 }
     		 else {
+    			 //if expression does not equal 24 tell user to try again
     			 tfExpression.setText("Try Again!");
     		 }
     	 }
     }
 
     public Card[] loadCards() {
+    	
+    	//load cards using polymorphism, parent class used to instantiate child class
 		 
+    	//Load Heart Cards
 		Card aceOfHearts = new Heart("Cards\\Hearts\\1_of_hearts.png", 1, "Heart");
 	    Card twoOfHearts = new Heart("Cards\\Hearts\\2_of_hearts.png", 2, "Heart");
 	    Card threeOfHearts = new Heart("Cards\\Hearts\\3_of_hearts.png", 3, "Heart");
@@ -272,7 +283,7 @@ public class MyController {
     
     public void displayCards() {
     	
-
+    		//card1
     		Random rand = new Random(); // Makes a new random number using the Random class
     		cardNum = rand.nextInt(51) + 0; // Stores random number to an int variable to use for the 'deck' array 
     		card1 = deck[cardNum];
@@ -311,38 +322,4 @@ public class MyController {
 }
 
 
-
-
-	/*Random rand = new Random(); // Makes a new random number using the Random class
-	int cardNum = rand.nextInt(51) + 0; // Stores random number to an int variable to use for the 'deck' array 
-	card1 = deck[cardNum];
-	    //card1
-	Image img1 = new Image(card1.getPic()); // Grabs the image directory of the card in the 'deck' array chosen by the random number
-	imageView1 = new ImageView(img1); // Displays the chosen card to the user
-	    
-		
-		//card2
-		Random rand2 = new Random();
-		int cardNum2 = rand2.nextInt(51) + 0;
-		card2 = deck[cardNum2];
-		//card2		
-		Image img2 = new Image(card2.getPic());
-		imageView2 = new ImageView(img2);
-		
-		
-		//card3
-		Random rand3 = new Random();
-		int cardNum3 = rand3.nextInt(51) + 0;	
-		card3 = deck[cardNum3];
-		//card3				
-		Image img3 = new Image(card3.getPic());
-		imageView3 = new ImageView(img3);
-		
-		
-		//card4
-		Random rand4 = new Random();
-		int cardNum4 = rand4.nextInt(51) + 0;	
-		card4 = deck[cardNum4];
-		Image img4 = new Image(card4.getPic());
-		imageView4 = new ImageView(img4);*/
-
+	
