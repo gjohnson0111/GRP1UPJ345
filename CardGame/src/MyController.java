@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Scanner;
+import java.util.Stack;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -15,6 +18,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class MyController {
 	
@@ -31,6 +38,10 @@ public class MyController {
 	long start = 0;
 	long end = 0;
 	boolean pressed = false;
+	boolean foundSol = false;
+	boolean solutionPressed = false ;
+	String operators = "+-/*";
+	//ArrayList<Integer> entered = new ArrayList<>();
 
 	 
 
@@ -67,52 +78,35 @@ public class MyController {
 
     @FXML
     private TextField tfExpression;
+    
+    @FXML
+    private Text mText;
    
 
     @FXML
-    void findSolution(ActionEvent event) {
+    void findSolution(ActionEvent event)  {
     	 
     	  //modified solution found 
         //https://stackoverflow.com/questions/2392379/computing-target-number-from-numbers-in-a-set
-
-       tfSolution.setText("Thinking....");
-        expression(card1.getCardNum(), card2.getCardNum(), card3.getCardNum(), card4.getCardNum());
+    	
+    	tfSolution.setText("Thinking...."); 
+       
+        try {
+        	tfSolution.setText("Thinking...."); 
+			expression(card1.getCardNum(), card2.getCardNum(), card3.getCardNum(), card4.getCardNum());
+		} catch (ScriptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
           
          if(!foundSol) {
+        	 tfSolution.clear();
              tfSolution.setText("No Solution!");
          }
 
 
     }
 
-    	public void f(StringBuilder digits, int target) {
-    	           for (int i = 1; i <= digits.length(); i++) {
-    	             String current = digits.substring(0,i);
-    	             check(0, Integer.parseInt(current), digits.substring(i), target, current);
-    	           }
-    	         } 
-
-
-    	    public void check(double sum, double previous, String digits, int target, String expr) {
-    	       if (digits.length() == 0) {
-    	         if (sum + previous == target) {
-    	           //System.out.println(expr + " = " + target);
-    	           tfSolution.setText(expr);
-    	         }
-    	       } 
-    	       else {
-    	         for (int i = 1; i <= digits.length(); i++) {
-    	           double current = Integer.parseInt(digits.substring(0, i));
-    	           String remaining = digits.substring(i);
-    	           check(sum + previous, current, remaining, target, expr + " + " + current);
-    	           check(sum, previous * current, remaining, target, expr + " * " + current);
-    	           check(sum, previous / current, remaining, target, expr + " / " + current);
-    	           check(sum + previous, -current, remaining, target, expr + " - " + current);
-    	         }
-    	       }
-    	     }	
-    	
-    	    	
     
 
     public MyController() { //entered by professor?
@@ -121,12 +115,13 @@ public class MyController {
 
     @FXML
     void refreshCards(ActionEvent event) {
+    	
     	// start of function
     	// Call to record time
     	recordTime();
-        
+        mText.setText("");
     	tfSolution.clear();
-        
+        solutionPressed = false;
     	tfExpression.clear();
     	butRefresh.setText("Refresh");
     	
@@ -175,24 +170,27 @@ public class MyController {
     
 
     @FXML
-    void verifyCards(ActionEvent event) throws ScriptException {
+void verifyCards(ActionEvent event) throws ScriptException {
     	
     	boolean same = true; //create flag to check arrays
     	
+    	ArrayList<Integer> entered = new ArrayList<>();
     	
     	String exp = tfExpression.getText(); //retrieve text from text field
+  
+    	char ch;
     	
-    	 String [] expNumbers = exp.split("\\+|-|/|\\*"); //split expression and store digits
-    	 
-    	 //parse string numbers to integers and store in an integer array
-    	 int entered1 = Integer.parseInt(expNumbers[0]);
-    	 int entered2 = Integer.parseInt(expNumbers[1]);
-    	 int entered3 = Integer.parseInt(expNumbers[2]);
-    	 int entered4 = Integer.parseInt(expNumbers[3]);
-    	 
-    	 
-    	 int [] entered = {entered1, entered2, entered3, entered4};
-    	 Arrays.sort(entered); //sort array
+    	for(int i = 0; i < exp.length(); i++) {
+    		ch = exp.charAt(i);
+    		
+    		if(Character.isDigit(ch)) {
+    			entered.add(ch-'0');
+    		}
+    		
+    	}
+    	
+    	
+    	Collections.sort(entered);
     	 
     	 //store card numbers in an array called hand to compare with the numbers taken in from expression
     	 int [] hand = {card1.getCardNum(), card2.getCardNum(), card3.getCardNum(), card4.getCardNum()};
@@ -200,8 +198,8 @@ public class MyController {
     	 
     	 //check every index to see if they hold the same value (sorted), if not set flag to false
     	 for(int i = 0; i < 4; i++) {
-    		
-    		 if(entered[i] != hand[i]) {
+    		 
+    		 if(entered.get(i) != hand[i]) {
     			 same = false;
     			 break;
     		 }
@@ -219,8 +217,7 @@ public class MyController {
     		 //create and instantiate script engine object to evaluate text field expression
     		 ScriptEngineManager mgr = new ScriptEngineManager();
     		 ScriptEngine engine = mgr.getEngineByName("JavaScript");
-    		 String foo = tfExpression.getText();
-    		 String result = (engine.eval(foo)).toString();
+    		 String result = (engine.eval(exp)).toString();
     		 tfExpression.clear();
     		 tfExpression.setText(result);
     		 
@@ -233,8 +230,13 @@ public class MyController {
     			 System.out.println("Time elapsed: " + minutes + "m " + seconds + "s " );
     			 pressed = false;
     			 
-    			 tfExpression.setText("24! WINNER!");
-
+    			 tfExpression.setText("24!");
+    			 mText.setText("WINNER!");
+    			 mText.setFont(Font.font("Courier", FontWeight.BOLD, 100));
+    			 
+    			
+    			 mText.setFill(Color.RED);
+    			 	
     		 }
     		 else {
     			 //if expression does not equal 24 tell user to try again
@@ -318,46 +320,9 @@ public class MyController {
             };	
 	    
 	    return deck;
-}
-    
-    
-    public void displayCards() {
-    	
-    		//card1
-    		Random rand = new Random(); // Makes a new random number using the Random class
-    		cardNum = rand.nextInt(51) + 0; // Stores random number to an int variable to use for the 'deck' array 
-    		card1 = deck[cardNum];
-    	    //card1
-    		Image img1 = new Image(card1.getPic()); // Grabs the image directory of the card in the 'deck' array chosen by the random number
-    		imageView1.setImage(img1); // Displays the chosen card to the user
-    	    
-    		
-    		//card2
-    		Random rand2 = new Random();
-    		cardNum2 = rand2.nextInt(51) + 0;
-    		card2 = deck[cardNum2];
-    		//card2		
-    		Image img2 = new Image(card2.getPic());
-    		imageView2.setImage(img2);
-    		
-    		
-    		//card3
-    		Random rand3 = new Random();
-    		cardNum3 = rand3.nextInt(51) + 0;	
-    		card3 = deck[cardNum3];
-    		//card3				
-    		Image img3 = new Image(card3.getPic());
-    		imageView3.setImage(img3);
-    		
-    		
-    		//card4
-    		Random rand4 = new Random();
-    		cardNum4 = rand4.nextInt(51) + 0;	
-    		card4 = deck[cardNum4];
-    		Image img4 = new Image(card4.getPic());
-    		imageView4.setImage(img4);	
-    	
     }
+    
+    	
 // record time function 
     public void recordTime() {
         if(!pressed) { //if refresh button was pressed, start record time
@@ -422,7 +387,6 @@ public class MyController {
     
      void expression(Integer... numbers) throws ScriptException {
        
-        
         brute(numbers, 0, "");
     }
 
