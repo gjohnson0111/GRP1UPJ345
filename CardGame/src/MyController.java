@@ -32,7 +32,7 @@ public class MyController {
 	long end = 0;
 	boolean pressed = false;
 
-	
+	 
 
     @FXML
     private AnchorPane anchorPane;
