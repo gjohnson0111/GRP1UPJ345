@@ -71,7 +71,46 @@ public class MyController {
 
     @FXML
     void findSolution(ActionEvent event) {
-    	
+    	 
+    	StringBuilder currentCards = new StringBuilder();
+    	        currentCards.append(card1.getCardNum());
+    	        currentCards.append(card2.getCardNum());
+    	        currentCards.append(card3.getCardNum());
+    	        currentCards.append(card4.getCardNum());
+    	        //String currentHand  = currentCards.toString();
+    	       
+    	        
+    	        f(currentCards, 24);
+
+
+
+
+    	public void f(StringBuilder digits, int target) {
+    	           for (int i = 1; i <= digits.length(); i++) {
+    	             String current = digits.substring(0,i);
+    	             check(0, Integer.parseInt(current), digits.substring(i), target, current);
+    	           }
+    	         } 
+
+
+    	    public void check(double sum, double previous, String digits, int target, String expr) {
+    	       if (digits.length() == 0) {
+    	         if (sum + previous == target) {
+    	           //System.out.println(expr + " = " + target);
+    	           tfSolution.setText(expr);
+    	         }
+    	       } 
+    	       else {
+    	         for (int i = 1; i <= digits.length(); i++) {
+    	           double current = Integer.parseInt(digits.substring(0, i));
+    	           String remaining = digits.substring(i);
+    	           check(sum + previous, current, remaining, target, expr + " + " + current);
+    	           check(sum, previous * current, remaining, target, expr + " * " + current);
+    	           check(sum, previous / current, remaining, target, expr + " / " + current);
+    	           check(sum + previous, -current, remaining, target, expr + " - " + current);
+    	         }
+    	       }
+    	     }	
     	
     	    	
     }
