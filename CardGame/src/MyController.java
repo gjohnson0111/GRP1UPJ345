@@ -83,7 +83,7 @@ public class MyController {
     	        f(currentCards, 24);
 
 
-
+    }
 
     	public void f(StringBuilder digits, int target) {
     	           for (int i = 1; i <= digits.length(); i++) {
@@ -113,7 +113,7 @@ public class MyController {
     	     }	
     	
     	    	
-    }
+    
 
     public MyController() { //entered by professor?
     	//refreshCards(new ActionEvent());
