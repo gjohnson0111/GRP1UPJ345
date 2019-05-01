@@ -72,15 +72,15 @@ public class MyController {
     @FXML
     void findSolution(ActionEvent event) {
     	 
-    	StringBuilder currentCards = new StringBuilder();
-    	        currentCards.append(card1.getCardNum());
-    	        currentCards.append(card2.getCardNum());
-    	        currentCards.append(card3.getCardNum());
-    	        currentCards.append(card4.getCardNum());
-    	        //String currentHand  = currentCards.toString();
-    	       
-    	        
-    	        f(currentCards, 24);
+    	  //modified solution found 
+        //https://stackoverflow.com/questions/2392379/computing-target-number-from-numbers-in-a-set
+
+       tfSolution.setText("Thinking....");
+        expression(card1.getCardNum(), card2.getCardNum(), card3.getCardNum(), card4.getCardNum());
+          
+         if(!foundSol) {
+             tfSolution.setText("No Solution!");
+         }
 
 
     }
@@ -374,6 +374,56 @@ public class MyController {
             start = System.currentTimeMillis(); //restart time record
             
         }
+    }
+    
+    String translate(String postfix) {
+        Stack<String> expr = new Stack<String>();
+        Scanner sc = new Scanner(postfix);
+        while (sc.hasNext()) {
+            String t = sc.next();
+            if (operators.indexOf(t) == -1) {
+                expr.push(t);
+            } else {
+                expr.push("(" + expr.pop() + t + expr.pop() + ")");
+            }
+        }
+        return expr.pop();
+    }
+
+     void brute(Integer[] numbers, int stackHeight, String eq) throws ScriptException {
+        if (stackHeight >= 2) {
+            for (char op : operators.toCharArray()) {
+                brute(numbers, stackHeight - 1, eq + " " + op);
+            }
+        }
+        boolean allUsedUp = true;
+        for (int i = 0; i < numbers.length; i++) {
+            if (numbers[i] != null) {
+                allUsedUp = false;
+                Integer n = numbers[i];
+                numbers[i] = null;
+                brute(numbers, stackHeight + 1, eq + " " + n);
+                numbers[i] = n;
+            }
+        }
+        if (allUsedUp && stackHeight == 1) {
+            
+            ScriptEngineManager mgr = new ScriptEngineManager();
+            ScriptEngine engine = mgr.getEngineByName("JavaScript");
+            String result = (engine.eval(translate(eq))).toString();
+            
+            if(Double.parseDouble(result) == 24) {
+                tfSolution.setText(translate(eq));
+                foundSol = true;
+                //System.out.println(eq + " === " + translate(eq));
+            }
+        }
+    }
+    
+     void expression(Integer... numbers) throws ScriptException {
+       
+        
+        brute(numbers, 0, "");
     }
 
 }
