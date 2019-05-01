@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="417.0" prefWidth="686.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyController">
+   <children>
+      <Button fx:id="butSolution" layoutX="143.0" layoutY="23.0" mnemonicParsing="false" onAction="#findSolution" text="Find a Solution" />
+      <Button fx:id="butRefresh" layoutX="445.0" layoutY="23.0" mnemonicParsing="false" onAction="#refreshCards" text="Start Game" />
+      <Button fx:id="butVerify" layoutX="445.0" layoutY="356.0" mnemonicParsing="false" onAction="#verifyCards" prefHeight="25.0" prefWidth="56.0" text="Verify" />
+      <Label fx:id="expLabel" layoutX="76.0" layoutY="355.0" text="Find an expression:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="imageView1" fitHeight="207.0" fitWidth="163.0" layoutX="14.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imageView2" fitHeight="207.0" fitWidth="163.0" layoutX="191.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imageView3" fitHeight="207.0" fitWidth="163.0" layoutX="365.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imageView4" fitHeight="207.0" fitWidth="163.0" layoutX="529.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="tfSolution" editable="false" layoutX="250.0" layoutY="23.0" prefHeight="25.0" prefWidth="186.0" />
+      <TextField fx:id="tfExpression" layoutX="250.0" layoutY="356.0" prefHeight="25.0" prefWidth="186.0" />
+   </children>
+</AnchorPane>
