@@ -127,7 +127,7 @@ public class MyController {
     	
     	//card1
     	Random rand = new Random(); // Makes a new random number using the Random class
-        cardNum = rand.nextInt(51) + 0; // Stores random number to an int variable to use for the 'deck' array 
+        cardNum = rand.nextInt(35) + 0; // Stores random number to an int variable to use for the 'deck' array 
         card1 = deck[cardNum];
         //card1
         Image img1 = new Image(card1.getPic()); // Grabs the image directory of the card in the 'deck' array chosen by the random number
@@ -136,7 +136,7 @@ public class MyController {
 		
 		//card2
         Random rand2 = new Random();
-		cardNum2 = rand2.nextInt(51) + 0;
+		cardNum2 = rand2.nextInt(35) + 0;
 		card2 = deck[cardNum2];
 		//card2		
 		Image img2 = new Image(card2.getPic());
@@ -145,7 +145,7 @@ public class MyController {
 		
 		//card3
 		Random rand3 = new Random();
-		cardNum3 = rand3.nextInt(51) + 0;	
+		cardNum3 = rand3.nextInt(35) + 0;	
 		card3 = deck[cardNum3];
 		//card3				
 		Image img3 = new Image(card3.getPic());
@@ -154,7 +154,7 @@ public class MyController {
 		
 		//card4
 		Random rand4 = new Random();
-		int cardNum4 = rand4.nextInt(51) + 0;	
+		int cardNum4 = rand4.nextInt(35) + 0;	
 		card4 = deck[cardNum4];
 		//card4
 		Image img4 = new Image(card4.getPic());
@@ -313,10 +313,10 @@ void verifyCards(ActionEvent event) throws ScriptException {
 	    //Store Diamonds, Clubs, Hearts, Spades Cards
 	    Card [] deck =
             {
-              aceOfHearts, twoOfHearts, threeOfHearts, fourOfHearts, fiveOfHearts, sixOfHearts, sevenOfHearts, eightOfHearts, nineOfHearts, tenOfHearts, jackOfHearts, queenOfHearts, kingOfHearts,
-                    aceOfClubs, twoOfClubs, threeOfClubs, fourOfClubs, fiveOfClubs, sixOfClubs, sevenOfClubs, eightOfClubs, nineOfClubs, tenOfClubs, jackOfClubs, queenOfClubs, kingOfClubs,
-                    aceOfSpades, twoOfSpades, threeOfSpades, fourOfSpades, fiveOfSpades, sixOfSpades, sevenOfSpades, eightOfSpades, nineOfSpades, tenOfSpades, jackOfSpades, queenOfSpades, kingOfSpades,
-                    aceOfDiamonds, twoOfDiamonds, threeOfDiamonds, fourOfDiamonds, fiveOfDiamonds, sixOfDiamonds, sevenOfDiamonds, eightOfDiamonds, nineOfDiamonds, tenOfDiamonds, jackOfDiamonds, queenOfDiamonds, kingOfDiamonds 
+              aceOfHearts, twoOfHearts, threeOfHearts, fourOfHearts, fiveOfHearts, sixOfHearts, sevenOfHearts, eightOfHearts, nineOfHearts, 
+                    aceOfClubs, twoOfClubs, threeOfClubs, fourOfClubs, fiveOfClubs, sixOfClubs, sevenOfClubs, eightOfClubs, nineOfClubs, 
+                    aceOfSpades, twoOfSpades, threeOfSpades, fourOfSpades, fiveOfSpades, sixOfSpades, sevenOfSpades, eightOfSpades, nineOfSpades,
+                    aceOfDiamonds, twoOfDiamonds, threeOfDiamonds, fourOfDiamonds, fiveOfDiamonds, sixOfDiamonds, sevenOfDiamonds, eightOfDiamonds, nineOfDiamonds,  
             };	
 	    
 	    return deck;
